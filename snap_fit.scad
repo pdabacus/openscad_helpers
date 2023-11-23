@@ -1,6 +1,6 @@
 /*
 snap fit joint generator male and female parts
-v1.0.0
+v1.1.0
 Pavan Dayal
 */
 include<bezier.scad>
@@ -21,7 +21,7 @@ include<bezier.scad>
         $fn=5
     );
 
-linear_extrude(2)
+!linear_extrude(2)
     snap_female(
         width = 8,
         base_height = 1,
@@ -151,17 +151,17 @@ module snap_male(
             w2 = width / 2,
             bh = base_height,
             bh2 = base_height / 2,
-            bh4 = base_height / 4,
             W = wall,
-            W2 = wall / 2
+            W2 = wall / 2,
+            r=bh2-W
         ) bezier_poly([
-            [W,bh2,          0,-bh4   ],
-            [W+bh4,W                  ],
-            [w2-W-bh4,W               ],
-            [w2-W,bh2,        0,bh4   ],
-            [w2-W-bh4,bh-W            ],
-            [W2+bh4,bh-W              ],
-            [W,bh2,          0,-bh4   ]
+            [W+W2,bh2,          0,-r  ],
+            [W+W2+r,W                 ],
+            [w2-W-r,W                 ],
+            [w2-W,bh2,          0,r   ],
+            [w2-W-r,bh-W              ],
+            [W+W2+r,bh-W                ],
+            [W+W2,bh2,          0,-r  ]
         ], $fn=resolution);
     hole1_N = len(hole1);
 
@@ -173,18 +173,18 @@ module snap_male(
             bh = base_height,
             gw = guide_width,
             gw2 = guide_width / 2,
-            gw4 = guide_width / 4,
             gh = guide_height,
             W = wall,
-            W2 = wall / 2
+            W2 = wall / 2,
+            r = gw2-W
         ) bezier_poly([
-            [0,bh,          gw4,0   ],
-            [gw2-W,bh+gw4           ],
+            [0,bh,            r,0   ],
+            [gw2-W,bh+r             ],
             [gw2-W,gh-W             ],
-            [0,gh-W+gw4,   -gw4,0   ],
+            [0,gh-W+r,        -r,0  ],
             [-gw2+W,gh-W            ],
-            [-gw2+W,bh+gw4          ],
-            [0,bh,          gw4,0   ]
+            [-gw2+W,bh+r            ],
+            [0,bh,            r,0   ]
         ], $fn=resolution);
     hole3_N = len(hole3);
 
